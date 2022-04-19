@@ -23,8 +23,11 @@ export class Round {
 
     this.humanHands = [dealHand(this.deck)];
     this.dealerHand = dealHand(this.deck);
+
     this.humanHands = this.humanHands.map((hand) => getResultedHand(hand));
     this.dealerHand = getResultedHand(this.dealerHand);
+
+    this.peek();
   }
 
   public get humanHasActionableHands() {
@@ -80,6 +83,30 @@ export class Round {
 
       hand.actionable = false;
       hand.result = result;
+    }
+  }
+
+  private peek() {
+    const humanHand = this.humanHands[0];
+    const humanHandValues = getValuesOfCards(humanHand.cards);
+    const dealerHandValues = getValuesOfCards(this.dealerHand.cards);
+
+    const isHumanBlackack = humanHandValues.some(
+      (value) => value === blackjackValue
+    );
+    const isDealerBlackack = dealerHandValues.some(
+      (value) => value === blackjackValue
+    );
+
+    if (isHumanBlackack && isDealerBlackack) {
+      humanHand.result = Result.PUSH;
+      humanHand.actionable = false;
+    } else if (isHumanBlackack) {
+      humanHand.result = Result.BLACKJACK;
+      humanHand.actionable = false;
+    } else if (isDealerBlackack) {
+      humanHand.result = Result.LOSS;
+      humanHand.actionable = false;
     }
   }
 }
