@@ -12,17 +12,47 @@ import type { Card } from "./card";
 import { blackjackValue, bustIfOverValue, initialCardCount } from "./blackjack";
 import { Result } from "./result";
 
+type Cheat = {
+  humanCards: [Card, Card];
+  dealerCards: [Card, Card];
+};
+
 export class Round {
   private deck: Card[];
   public humanHands: Hand[];
   public dealerHand: Hand;
 
-  constructor() {
+  constructor(cheat?: Cheat) {
     this.deck = createDeck();
     shuffleDeck(this.deck);
 
-    this.humanHands = [dealHand(this.deck)];
-    this.dealerHand = dealHand(this.deck);
+    if (cheat) {
+      this.humanHands = [
+        {
+          bet: 10,
+          cards: cheat.humanCards,
+          actionable: true,
+          result: undefined,
+          fresh: true,
+        },
+      ];
+
+      this.dealerHand = {
+        bet: 10,
+        cards: cheat.dealerCards,
+        actionable: true,
+        result: undefined,
+        fresh: true,
+      };
+
+      const cheatCards = [...cheat.humanCards, ...cheat.dealerCards];
+      this.deck = this.deck.filter(
+        (card) => !cheatCards.some((x) => cardsAreSame(card, x))
+      );
+    } else {
+      this.humanHands = [dealHand(this.deck)];
+      this.dealerHand = dealHand(this.deck);
+    }
 
     this.humanHands = this.humanHands.map((hand) => getResultedHand(hand));
     this.dealerHand = getResultedHand(this.dealerHand);
@@ -175,4 +205,8 @@ const getResultAgainstDealer = ({
   }
 
   throw new Error("Invalid game state");
+};
+
+const cardsAreSame = (a: Card, b: Card) => {
+  return a.rank === b.rank && a.suit === b.suit;
 };
