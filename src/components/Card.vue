@@ -7,7 +7,7 @@ defineProps<{
 </script>
 
 <template>
-  <p class="text-slate-900 font-extrabold text-m text-center">
+  <p class="text-slate-900 font-extrabold text-l text-center">
     {{ card.rank }} of
     {{ card.suit }}
   </p>

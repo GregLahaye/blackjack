@@ -120,7 +120,7 @@ export default {
 </script>
 
 <template>
-  <div class="flex flex-col h-screen justify-between">
+  <div class="flex flex-col h-screen p-5 justify-between">
     <div>
       <p class="text-slate-900 font-extrabold text-l text-center">Balance</p>
       <p class="text-slate-900 font-extrabold text-4xl text-center">
@@ -137,7 +137,11 @@ export default {
         <div
           v-for="(hand, index) in round?.humanHands"
           :key="hand"
-          :class="{ active: index === currentHandIndex, 'p-2': true }"
+          :class="{
+            active: index === currentHandIndex,
+            'p-2': true,
+            rounded: true,
+          }"
         >
           <template v-for="card of hand?.cards" :key="card">
             <Card :card="card"></Card>
