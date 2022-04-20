@@ -90,6 +90,7 @@ export default {
     },
     clear() {
       this.balance = INITIAL_BALANCE;
+      this.empty = true;
     },
     updateBalance() {
       const totalBet = this.round.humanHands.reduce(
