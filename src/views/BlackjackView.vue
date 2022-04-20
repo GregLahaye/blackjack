@@ -162,8 +162,8 @@ export default {
 </script>
 
 <template>
-  <div class="flex flex-col h-screen p-5 justify-between items-center">
-    <div>
+  <div class="flex flex-col h-screen justify-between items-center">
+    <div class="pt-3">
       <div>
         <p class="text-slate-900 font-extrabold text-l text-center">Balance</p>
         <p class="text-slate-900 font-extrabold text-4xl text-center">
@@ -254,7 +254,7 @@ export default {
       </div>
     </div>
 
-    <div class="self-stretch">
+    <div class="self-stretch sticky bottom-0 bg-slate-100 p-1 rounded">
       <div class="flex">
         <button
           @click="deal()"
