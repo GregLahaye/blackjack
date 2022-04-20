@@ -6,6 +6,7 @@ import Card from "../components/Card.vue";
 import type { Cheat } from "@/blackjack/round";
 import type { Store } from "pinia";
 import { useBalanceStore } from "@/stores/balance";
+import { createDeck } from "@/blackjack/deck";
 
 const INITIAL_BET = 10;
 const INITIAL_BALANCE = 100;
@@ -15,6 +16,8 @@ export default {
     this.balanceStore.$subscribe((mutation, state) => {
       localStorage.setItem("balance", state.balance);
     });
+
+    this.preload();
   },
   data(): {
     round: Round | undefined;
@@ -155,6 +158,14 @@ export default {
     split() {
       this.round.human(Action.SPLIT);
       this.postActionCheck();
+    },
+    preload() {
+      const cards = createDeck();
+      for (const card of cards) {
+        const filename = `/${card.rank}_of_${card.suit}`;
+        const image = new Image();
+        image.src = filename;
+      }
     },
   },
   components: { Card },
