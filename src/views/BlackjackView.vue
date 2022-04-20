@@ -245,7 +245,7 @@ export default {
           <div class="flex flex-row overflow-auto">
             <Card :card="round.dealerHand.cards[0]"></Card>
 
-            <template v-if="humanHasActionableHands === false">
+            <template :hidden="humanHasActionableHands">
               <template
                 v-for="card of round.dealerHand.cards.slice(1)"
                 :key="card"
