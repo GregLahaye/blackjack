@@ -139,9 +139,20 @@ export default {
         </p>
       </div>
 
-      <div>
-        <input type="range" min="5" max="50" step="5" v-model="bet" />
-        {{ bet }}
+      <div class="flex justify-center">
+        <p class="text-slate-700 font-extrabold text-l text-center">Bet</p>
+        <input
+          type="range"
+          min="10"
+          max="50"
+          step="5"
+          v-model="bet"
+          :disabled="!isRoundEnded"
+          class="mx-1"
+        />
+        <p class="text-slate-900 font-extrabold text-l text-center">
+          {{ bet }}
+        </p>
       </div>
     </div>
 
