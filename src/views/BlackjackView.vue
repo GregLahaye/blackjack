@@ -194,28 +194,32 @@ export default {
           Your Hands
         </p>
 
-        <div
-          v-for="(hand, index) in round?.humanHands"
-          :key="hand"
-          :class="{
-            'bg-pink-100': index === currentHandIndex,
-            'p-2': true,
-            rounded: true,
-          }"
-        >
-          <div class="active cards flex flex-col items-center">
-            <div>
-              <template v-for="card of hand?.cards" :key="card">
-                <Card :card="card"></Card>
-              </template>
+        <div class="flex flex-row content-center">
+          <div
+            v-for="(hand, index) in round?.humanHands"
+            :key="hand"
+            :class="{
+              'bg-pink-100': index === currentHandIndex,
+              'px-5': true,
+              'py-3': true,
+              rounded: true,
+              'flex-1': true,
+            }"
+          >
+            <div class="active cards flex flex-col items-center">
+              <div>
+                <template v-for="card of hand?.cards" :key="card">
+                  <Card :card="card"></Card>
+                </template>
+              </div>
             </div>
-          </div>
 
-          <template v-if="hand.result">
-            <p class="text-slate-500 font-extrabold text-l text-center">
-              {{ hand.result }}
-            </p>
-          </template>
+            <template v-if="hand.result">
+              <p class="text-slate-500 font-extrabold text-l text-center">
+                {{ hand.result }}
+              </p>
+            </template>
+          </div>
         </div>
       </div>
 
