@@ -26,7 +26,6 @@ export default {
     canDouble: boolean;
     canSplit: boolean;
     isRoundEnded: boolean;
-    isDealerBust: boolean;
     balanceStore: Store;
     roundStartBalance: number;
     empty: boolean;
@@ -39,7 +38,6 @@ export default {
       canDouble: false,
       canSplit: false,
       isRoundEnded: true,
-      isDealerBust: false,
       balanceStore: useBalanceStore(
         localStorage.getItem("balance") ?? INITIAL_BALANCE
       ),
@@ -59,6 +57,12 @@ export default {
     },
     hasFunds(): boolean {
       return this.balance >= this.bet;
+    },
+    isDealerBust(): boolean {
+      return this?.round?.dealerHand?.result === Result.BUST;
+    },
+    isDealerBlackjack(): boolean {
+      return this?.round?.dealerHand?.result === Result.BLACKJACK;
     },
   },
   methods: {
@@ -82,7 +86,6 @@ export default {
       this.currentHandIndex = 0;
       this.humanHasActionableHands = true;
       this.isRoundEnded = false;
-      this.isDealerBust = false;
       this.postActionCheck();
     },
     clear() {
@@ -110,7 +113,6 @@ export default {
           this.updateFinalBalance();
         }
         this.isRoundEnded = true;
-        this.isDealerBust = this.round.dealerHand.result === Result.BUST;
       }
     },
     updateFinalBalance() {
@@ -245,22 +247,20 @@ export default {
           <div class="flex flex-row overflow-auto">
             <Card :card="round.dealerHand.cards[0]"></Card>
 
-            <template :hidden="humanHasActionableHands">
-              <template
-                v-for="card of round.dealerHand.cards.slice(1)"
-                :key="card"
-              >
-                <Card :card="card"></Card>
-              </template>
-            </template>
+            <Card
+              :hidden="humanHasActionableHands"
+              v-for="card of round.dealerHand.cards.slice(1)"
+              :key="card"
+              :card="card"
+            ></Card>
           </div>
         </div>
 
         <p
-          v-if="isDealerBust"
+          v-if="isDealerBust || isDealerBlackjack"
           class="text-slate-500 font-extrabold text-l text-center"
         >
-          Dealer Busts
+          DEALER {{ round.dealerHand.result }}
         </p>
       </div>
     </div>
