@@ -81,6 +81,9 @@ export default {
       this.isDealerBust = false;
       this.postActionCheck();
     },
+    clear() {
+      this.balance = INITIAL_BALANCE;
+    },
     updateBalance() {
       const totalBet = this.round.humanHands.reduce(
         (sum, { bet }) => sum + bet,
@@ -274,6 +277,16 @@ export default {
           class="flex-auto m-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:bg-slate-400"
         >
           Split
+        </button>
+      </div>
+
+      <div class="flex">
+        <button
+          @click="clear()"
+          :hidden="!isRoundEnded || balance > 0"
+          class="flex-auto m-1 bg-red-600 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded m-1 disabled:bg-slate-400"
+        >
+          RESET
         </button>
       </div>
     </div>
