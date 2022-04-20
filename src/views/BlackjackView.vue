@@ -2,15 +2,20 @@
 import { Action } from "@/blackjack/action";
 import { Round } from "@/blackjack/round";
 import { Result } from "@/blackjack/result";
-import { createWallet } from "@/wallet/wallet";
-import type { Wallet } from "@/wallet/wallet";
 import Card from "../components/Card.vue";
 import type { Cheat } from "@/blackjack/round";
+import type { Store } from "pinia";
+import { useBalanceStore } from "@/stores/balance";
 
 const INITIAL_BET = 10;
 const INITIAL_BALANCE = 100;
 
 export default {
+  mounted() {
+    this.balanceStore.$subscribe((mutation, state) => {
+      localStorage.setItem("balance", state.balance);
+    });
+  },
   data(): {
     round: Round | undefined;
     currentHandIndex: number;
@@ -19,7 +24,7 @@ export default {
     canSplit: boolean;
     isRoundEnded: boolean;
     isDealerBust: boolean;
-    wallet: Wallet;
+    balanceStore: Store;
     roundStartBalance: number;
     empty: boolean;
     bet: number;
@@ -32,15 +37,25 @@ export default {
       canSplit: false,
       isRoundEnded: true,
       isDealerBust: false,
-      wallet: createWallet(INITIAL_BALANCE),
+      balanceStore: useBalanceStore(
+        localStorage.getItem("balance") ?? INITIAL_BALANCE
+      ),
       roundStartBalance: 0,
       empty: true,
       bet: INITIAL_BET,
     };
   },
   computed: {
+    balance: {
+      get(): number {
+        return this.balanceStore.$state.balance;
+      },
+      set(value: number): void {
+        this.balanceStore.$state.balance = value;
+      },
+    },
     hasFunds(): boolean {
-      return this.wallet.balance >= this.bet;
+      return this.balance >= this.bet;
     },
   },
   methods: {
@@ -58,7 +73,7 @@ export default {
       };
 
       this.empty = false;
-      this.roundStartBalance = this.wallet.balance;
+      this.roundStartBalance = this.balance;
       this.round = new Round(this.bet, enableCheats ? cheat : undefined);
       this.currentHandIndex = 0;
       this.humanHasActionableHands = true;
@@ -72,7 +87,7 @@ export default {
         0
       );
       const balance = this.roundStartBalance - totalBet;
-      this.wallet.balance = balance;
+      this.balance = balance;
     },
     postActionCheck() {
       this.currentHandIndex = this.round.currentHandIndex;
@@ -110,7 +125,7 @@ export default {
         0
       );
       const drawBalance = drawingHands.reduce((sum, { bet }) => sum + bet, 0);
-      this.wallet.balance += blackjackBalance + winBalance + drawBalance;
+      this.balance += blackjackBalance + winBalance + drawBalance;
     },
     updateButtons() {
       const currentHumanHand = this.round.humanHands[this.currentHandIndex];
@@ -148,7 +163,7 @@ export default {
       <div>
         <p class="text-slate-900 font-extrabold text-l text-center">Balance</p>
         <p class="text-slate-900 font-extrabold text-4xl text-center">
-          {{ wallet.balance }}
+          {{ balance }}
         </p>
       </div>
 
