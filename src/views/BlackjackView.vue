@@ -184,7 +184,7 @@ export default {
         <button
           @click="deal()"
           :disabled="!isRoundEnded"
-          class="flex-auto m-1 bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded m-1"
+          class="flex-auto m-1 bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded m-1 disabled:bg-slate-400"
         >
           Deal
         </button>
@@ -194,28 +194,28 @@ export default {
         <button
           @click="hit()"
           :disabled="isRoundEnded"
-          class="flex-auto m-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          class="flex-auto m-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:bg-slate-400"
         >
           Hit
         </button>
         <button
           @click="stand()"
           :disabled="isRoundEnded"
-          class="flex-auto m-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          class="flex-auto m-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:bg-slate-400"
         >
           Stand
         </button>
         <button
           @click="double()"
           :disabled="!canDouble || isRoundEnded"
-          class="flex-auto m-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          class="flex-auto m-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:bg-slate-400"
         >
           Double
         </button>
         <button
           @click="split()"
           :disabled="!canSplit || isRoundEnded"
-          class="flex-auto m-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          class="flex-auto m-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:bg-slate-400"
         >
           Split
         </button>
