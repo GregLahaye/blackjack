@@ -194,7 +194,7 @@ export default {
           Your Hands
         </p>
 
-        <div class="flex flex-row content-center">
+        <div class="flex flex-col content-center">
           <div
             v-for="(hand, index) in round?.humanHands"
             :key="hand"
@@ -203,11 +203,10 @@ export default {
               'px-5': true,
               'py-3': true,
               rounded: true,
-              'flex-1': true,
             }"
           >
             <div class="active cards flex flex-col items-center">
-              <div>
+              <div class="flex flex-row overflow-auto">
                 <template v-for="card of hand?.cards" :key="card">
                   <Card :card="card"></Card>
                 </template>
@@ -232,7 +231,7 @@ export default {
           v-if="round?.dealerHand"
           class="cards flex flex-col items-center p-3"
         >
-          <div>
+          <div class="flex flex-row overflow-auto">
             <Card :card="round.dealerHand.cards[0]"></Card>
 
             <template v-if="humanHasActionableHands === false">
