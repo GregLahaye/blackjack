@@ -7,10 +7,14 @@ defineProps<{
 </script>
 
 <template>
-  <p class="text-slate-900 font-extrabold text-l text-center">
+  <!-- <p class="text-slate-900 font-extrabold text-l text-center">
     {{ card.rank }} of
     {{ card.suit }}
-  </p>
-</template>
+  </p> -->
 
-<style scoped></style>
+  <img
+    :src="`cards/${card.rank}_of_${card.suit}.svg`"
+    width="100"
+    class="float-left"
+  />
+</template>

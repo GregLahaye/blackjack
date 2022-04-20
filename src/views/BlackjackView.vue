@@ -161,7 +161,7 @@ export default {
 </script>
 
 <template>
-  <div class="flex flex-col h-screen p-5 justify-between">
+  <div class="flex flex-col h-screen p-5 justify-between items-center">
     <div>
       <div>
         <p class="text-slate-900 font-extrabold text-l text-center">Balance</p>
@@ -197,14 +197,16 @@ export default {
           v-for="(hand, index) in round?.humanHands"
           :key="hand"
           :class="{
-            active: index === currentHandIndex,
+            'bg-pink-100': index === currentHandIndex,
             'p-2': true,
             rounded: true,
           }"
         >
-          <template v-for="card of hand?.cards" :key="card">
-            <Card :card="card"></Card>
-          </template>
+          <div class="active cards flex justify-center">
+            <template v-for="card of hand?.cards" :key="card">
+              <Card :card="card"></Card>
+            </template>
+          </div>
 
           <template v-if="hand.result">
             <p class="text-slate-500 font-extrabold text-l text-center">
@@ -219,26 +221,29 @@ export default {
           Dealer Hand
         </p>
 
-        <template v-if="round?.dealerHand">
+        <div v-if="round?.dealerHand" class="cards flex justify-center">
           <Card :card="round.dealerHand.cards[0]"></Card>
 
           <template v-if="humanHasActionableHands === false">
-            <div v-for="card of round.dealerHand.cards.slice(1)" :key="card">
+            <template
+              v-for="card of round.dealerHand.cards.slice(1)"
+              :key="card"
+            >
               <Card :card="card"></Card>
-            </div>
+            </template>
           </template>
+        </div>
 
-          <p
-            v-if="isDealerBust"
-            class="text-slate-500 font-extrabold text-l text-center"
-          >
-            Dealer Busts
-          </p>
-        </template>
+        <p
+          v-if="isDealerBust"
+          class="text-slate-500 font-extrabold text-l text-center"
+        >
+          Dealer Busts
+        </p>
       </div>
     </div>
 
-    <div>
+    <div class="self-stretch">
       <div class="flex">
         <button
           @click="deal()"
@@ -283,7 +288,7 @@ export default {
       <div class="flex">
         <button
           @click="clear()"
-          :hidden="!isRoundEnded || balance > 0"
+          :hidden="!isRoundEnded || balance >= bet"
           class="flex-auto m-1 bg-red-600 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded m-1 disabled:bg-slate-400"
         >
           RESET
@@ -292,11 +297,3 @@ export default {
     </div>
   </div>
 </template>
-
-<style>
-@import "@/assets/base.css";
-
-.active {
-  background: var(--color-background-soft);
-}
-</style>
