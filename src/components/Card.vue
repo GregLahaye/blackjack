@@ -14,7 +14,7 @@ defineProps<{
 
   <img
     :src="`cards/${card.rank}_of_${card.suit}.svg`"
-    width="100"
-    class="float-left"
+    width="150"
+    class="float-left m-auto"
   />
 </template>

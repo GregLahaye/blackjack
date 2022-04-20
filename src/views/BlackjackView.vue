@@ -60,14 +60,15 @@ export default {
   },
   methods: {
     deal() {
-      const enableCheats = false;
+      const enableCheats = true;
       const cheat: Cheat = {
         humanCards: [
-          { rank: "J", suit: "diamonds" },
+          { rank: "Q", suit: "hearts" },
           { rank: "Q", suit: "hearts" },
         ],
         dealerCards: [
           { rank: "K", suit: "clubs" },
+          { rank: "10", suit: "spades" },
           { rank: "10", suit: "spades" },
         ],
       };
@@ -202,10 +203,12 @@ export default {
             rounded: true,
           }"
         >
-          <div class="active cards flex justify-center">
-            <template v-for="card of hand?.cards" :key="card">
-              <Card :card="card"></Card>
-            </template>
+          <div class="active cards flex flex-col items-center">
+            <div>
+              <template v-for="card of hand?.cards" :key="card">
+                <Card :card="card"></Card>
+              </template>
+            </div>
           </div>
 
           <template v-if="hand.result">
@@ -221,17 +224,19 @@ export default {
           Dealer Hand
         </p>
 
-        <div v-if="round?.dealerHand" class="cards flex justify-center">
-          <Card :card="round.dealerHand.cards[0]"></Card>
+        <div v-if="round?.dealerHand" class="cards flex flex-col items-center">
+          <div>
+            <Card :card="round.dealerHand.cards[0]"></Card>
 
-          <template v-if="humanHasActionableHands === false">
-            <template
-              v-for="card of round.dealerHand.cards.slice(1)"
-              :key="card"
-            >
-              <Card :card="card"></Card>
+            <template v-if="humanHasActionableHands === false">
+              <template
+                v-for="card of round.dealerHand.cards.slice(1)"
+                :key="card"
+              >
+                <Card :card="card"></Card>
+              </template>
             </template>
-          </template>
+          </div>
         </div>
 
         <p
