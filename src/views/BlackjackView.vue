@@ -162,7 +162,7 @@ export default {
     preload() {
       const cards = createDeck();
       for (const card of cards) {
-        const filename = `/${card.rank}_of_${card.suit}`;
+        const filename = `/cards/${card.rank}_of_${card.suit}.svg`;
         const image = new Image();
         image.src = filename;
       }
