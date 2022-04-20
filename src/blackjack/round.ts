@@ -22,14 +22,14 @@ export class Round {
   public humanHands: Hand[];
   public dealerHand: Hand;
 
-  constructor(cheat?: Cheat) {
+  constructor(bet: number, cheat?: Cheat) {
     this.deck = createDeck();
     shuffleDeck(this.deck);
 
     if (cheat) {
       this.humanHands = [
         {
-          bet: 10,
+          bet,
           cards: cheat.humanCards,
           actionable: true,
           result: undefined,
@@ -38,7 +38,7 @@ export class Round {
       ];
 
       this.dealerHand = {
-        bet: 10,
+        bet,
         cards: cheat.dealerCards,
         actionable: true,
         result: undefined,
@@ -50,8 +50,8 @@ export class Round {
         (card) => !cheatCards.some((x) => cardsAreSame(card, x))
       );
     } else {
-      this.humanHands = [dealHand(this.deck)];
-      this.dealerHand = dealHand(this.deck);
+      this.humanHands = [dealHand(this.deck, bet)];
+      this.dealerHand = dealHand(this.deck, bet);
     }
 
     this.humanHands = this.humanHands.map((hand) => getResultedHand(hand));
@@ -141,9 +141,9 @@ export class Round {
   }
 }
 
-const dealHand = (deck: Card[]): Hand => {
+const dealHand = (deck: Card[], bet: number): Hand => {
   const cards = takeCards(deck, initialCardCount);
-  return { bet: 10, cards, actionable: true, result: undefined, fresh: true };
+  return { bet, cards, actionable: true, result: undefined, fresh: true };
 };
 
 const getResultAgainstDealer = ({

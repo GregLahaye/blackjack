@@ -6,6 +6,9 @@ import { createWallet } from "@/wallet/wallet";
 import type { Wallet } from "@/wallet/wallet";
 import Card from "../components/Card.vue";
 
+const INITIAL_BET = 10;
+const INITIAL_BALANCE = 100;
+
 export default {
   data(): {
     round: Round | undefined;
@@ -18,6 +21,7 @@ export default {
     wallet: Wallet;
     roundStartBalance: number;
     empty: boolean;
+    bet: number;
   } {
     return {
       round: undefined,
@@ -27,21 +31,22 @@ export default {
       canSplit: false,
       isRoundEnded: true,
       isDealerBust: false,
-      wallet: createWallet(),
+      wallet: createWallet(INITIAL_BALANCE),
       roundStartBalance: 0,
       empty: true,
+      bet: INITIAL_BET,
     };
   },
   computed: {
     hasFunds(): boolean {
-      return this.wallet.balance >= 10;
+      return this.wallet.balance >= this.bet;
     },
   },
   methods: {
     deal() {
       this.empty = false;
       this.roundStartBalance = this.wallet.balance;
-      this.round = new Round();
+      this.round = new Round(this.bet);
       this.currentHandIndex = 0;
       this.humanHasActionableHands = true;
       this.isRoundEnded = false;
@@ -127,10 +132,17 @@ export default {
 <template>
   <div class="flex flex-col h-screen p-5 justify-between">
     <div>
-      <p class="text-slate-900 font-extrabold text-l text-center">Balance</p>
-      <p class="text-slate-900 font-extrabold text-4xl text-center">
-        {{ wallet.balance }}
-      </p>
+      <div>
+        <p class="text-slate-900 font-extrabold text-l text-center">Balance</p>
+        <p class="text-slate-900 font-extrabold text-4xl text-center">
+          {{ wallet.balance }}
+        </p>
+      </div>
+
+      <div>
+        <input type="range" min="5" max="50" step="5" v-model="bet" />
+        {{ bet }}
+      </div>
     </div>
 
     <div :hidden="empty">

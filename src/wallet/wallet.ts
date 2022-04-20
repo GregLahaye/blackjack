@@ -2,8 +2,8 @@ export type Wallet = {
   balance: number;
 };
 
-export const createWallet = () => {
+export const createWallet = (balance: number) => {
   return {
-    balance: 100,
+    balance,
   };
 };
