@@ -228,7 +228,10 @@ export default {
           Dealer Hand
         </p>
 
-        <div v-if="round?.dealerHand" class="cards flex flex-col items-center">
+        <div
+          v-if="round?.dealerHand"
+          class="cards flex flex-col items-center p-3"
+        >
           <div>
             <Card :card="round.dealerHand.cards[0]"></Card>
 
