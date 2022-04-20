@@ -5,6 +5,7 @@ import { Result } from "@/blackjack/result";
 import { createWallet } from "@/wallet/wallet";
 import type { Wallet } from "@/wallet/wallet";
 import Card from "../components/Card.vue";
+import type { Cheat } from "@/blackjack/round";
 
 const INITIAL_BET = 10;
 const INITIAL_BALANCE = 100;
@@ -44,9 +45,21 @@ export default {
   },
   methods: {
     deal() {
+      const enableCheats = false;
+      const cheat: Cheat = {
+        humanCards: [
+          { rank: "J", suit: "diamonds" },
+          { rank: "Q", suit: "hearts" },
+        ],
+        dealerCards: [
+          { rank: "K", suit: "clubs" },
+          { rank: "10", suit: "spades" },
+        ],
+      };
+
       this.empty = false;
       this.roundStartBalance = this.wallet.balance;
-      this.round = new Round(this.bet);
+      this.round = new Round(this.bet, enableCheats ? cheat : undefined);
       this.currentHandIndex = 0;
       this.humanHasActionableHands = true;
       this.isRoundEnded = false;
@@ -146,7 +159,7 @@ export default {
           min="10"
           max="50"
           step="5"
-          v-model="bet"
+          v-model.number="bet"
           :disabled="!isRoundEnded"
           class="mx-1"
         />

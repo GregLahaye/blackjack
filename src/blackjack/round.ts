@@ -12,7 +12,7 @@ import type { Card } from "./card";
 import { blackjackValue, bustIfOverValue, initialCardCount } from "./blackjack";
 import { Result } from "./result";
 
-type Cheat = {
+export type Cheat = {
   humanCards: [Card, Card];
   dealerCards: [Card, Card];
 };
