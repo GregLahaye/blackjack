@@ -60,7 +60,7 @@ export default {
   },
   methods: {
     deal() {
-      const enableCheats = true;
+      const enableCheats = false;
       const cheat: Cheat = {
         humanCards: [
           { rank: "Q", suit: "hearts" },
